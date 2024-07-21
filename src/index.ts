@@ -41,15 +41,15 @@ io.on("connection", (socket) => {
 app.post('/sendPayload', async (req, res) => {
     const { userId, payload } = req.body;
     if (!userId || !payload) {
-        res.status(StatusCodes.BAD_REQUEST).send("Invalid Request");
+        return res.status(StatusCodes.BAD_REQUEST).send("Invalid Request");
     }
     const socketId = await redisCache.get(userId);
 
     if (socketId) {
         io.to(socketId).emit('submissionPayloadResponse', payload);
-        res.status(StatusCodes.OK).send("Payload Sent Successfully");
+        return res.status(StatusCodes.OK).send("Payload Sent Successfully");
     } else {
-        res.status(StatusCodes.INTERNAL_SERVER_ERROR).send("User Not Connected");
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).send("User Not Connected");
     }
 });
 
