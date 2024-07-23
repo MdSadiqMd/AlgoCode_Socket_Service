@@ -12,6 +12,7 @@
     "http-status-codes": "^2.3.0",
     "ioredis": "^5.4.1",
     "nodemon": "^3.1.4",
+    "redis": "^4.6.15",
     "socket.io": "^4.7.5",
     "ts-node": "^10.9.2",
     "winston": "^3.13.1"
