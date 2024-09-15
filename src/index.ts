@@ -21,8 +21,9 @@ const redisCache = new Redis({
 
 const io = new Server(httpServer, {
     cors: {
-        origin: serverConfig.FRONTEND_URL,
-        methods: ["GET", "POST"]
+        origin: ['*'],
+        methods: ["GET", "POST"],
+        credentials: true,
     }
 });
 
