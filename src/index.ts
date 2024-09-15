@@ -5,8 +5,8 @@ import { Server } from "socket.io";
 import { Redis } from "ioredis";
 import { StatusCodes } from "http-status-codes";
 
-import { PORT, FRONTEND_URL } from './config/server.config';
 import logger from './config/logger.config';
+import serverConfig from "./config/server.config";
 
 const app = express();
 app.use(bodyParser.json());
@@ -14,11 +14,14 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.text());
 
 const httpServer = createServer(app);
-const redisCache = new Redis();
+const redisCache = new Redis({
+    host: serverConfig.REDIS_HOST,
+    port: parseInt(serverConfig.REDIS_PORT, 10),
+});
 
 const io = new Server(httpServer, {
     cors: {
-        origin: FRONTEND_URL,
+        origin: serverConfig.FRONTEND_URL,
         methods: ["GET", "POST"]
     }
 });
@@ -64,6 +67,6 @@ app.post('/sendPayload', async (req, res) => {
     }
 });
 
-httpServer.listen(PORT, () => {
-    logger.info(`Server is running on port ${PORT}`);
+httpServer.listen(serverConfig.PORT, () => {
+    logger.info(`Server is running on port ${serverConfig.PORT}`);
 });
